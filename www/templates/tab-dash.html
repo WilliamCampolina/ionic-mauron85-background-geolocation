@@ -1,0 +1,57 @@
+<ion-view view-title="mouron 85 V3">
+    <ion-content class="padding">
+        <h4 align="center">cout : {{count}} / cod : {{cod.codigo}}</h4>
+        <div class="row" >
+            <div class="col col-80">
+                <div class="item range">
+                    <input type="range" name="cod" ng-model="cod.codigo" min="0" max="100" ng-disabled="!enable">                    
+                </div>
+            </div>
+            <div class="col col-20">
+                <input type="text" name="cod" ng-model="cod.codigo" value="cod.codigo" min="0" max="100" ng-disabled="!enable">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col col-33">
+                <button class="button button-block button-balanced" ng-click="iniciarMonitoramento()" ng-disabled="!enable">
+                    Iniciar
+                </button>
+            </div>
+            <div class="col col-33">
+                <button class="button button-block button-dark" ng-dblclick="pararMonitoramento()">
+                    Parar 
+                </button>
+            </div>
+            <div class="col col-33">
+                <button class="button button-block button-energized" ng-click="consultaCoordenadas(cod.codigo, true)" ng-disabled="!enable">
+                    Consultar
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-50">                
+                <button class="button button-block button-assertive" ng-click="apagarDados(cod.codigo)" ng-disabled="!enable">
+                    Apagar Dados
+                </button>
+            </div>
+            <div class="col col-50">
+                <button class="button button-block button-royal" ng-click="enviarDados(cod.codigo)" ng-disabled="!enable">
+                    Enviar Dados
+                </button>
+            </div>
+        </div>
+
+
+
+        <div class="list">
+            <a class="item item-icon-left" href="#" ng-repeat="item in list_coord | orderBy: '-data'" >
+                <i class="icon ion-location"></i>
+                <p>Lat : {{item.lat}}</p>
+                <p>Long : {{item.long}}</p>
+                <p>data : {{item.data| date:"MM/dd/yyyy HH:mm:ss"}}</p>
+                <p>Cod : {{item.cod}}</p>
+            </a>
+        </div>
+    </ion-content>
+</ion-view>

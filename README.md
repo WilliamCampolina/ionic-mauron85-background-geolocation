@@ -1,4 +1,4 @@
-# test-background-geolocation-lt
+# cordova-plugin-mauron85-background-geolocation
 
 test using Ionic V1 + Cordova + Geolocation plugin
 

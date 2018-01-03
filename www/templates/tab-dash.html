@@ -11,6 +11,22 @@
                 <input type="text" name="cod" ng-model="cod.codigo" value="cod.codigo" min="0" max="100" ng-disabled="!enable">
             </div>
         </div>
+        <div class="row" >
+            <div class="col">
+                stationaryRadius = {{conf.stationaryRadius}}
+                <div class="item range">
+                    <input type="range" name="cod" ng-model="conf.stationaryRadius" min="0" max="100" ng-disabled="!enable">                    
+                </div>
+            </div>
+        </div>
+        <div class="row" >
+            <div class="col">
+                distanceFilter = {{conf.distanceFilter}}
+                <div class="item range">
+                    <input type="range" name="cod" ng-model="conf.distanceFilter" min="0" max="100" ng-disabled="!enable">                    
+                </div>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col col-33">
@@ -25,19 +41,24 @@
             </div>
             <div class="col col-33">
                 <button class="button button-block button-energized" ng-click="consultaCoordenadas(cod.codigo, true)" ng-disabled="!enable">
-                    Consultar
+                    Select
                 </button>
             </div>
         </div>
         <div class="row">
-            <div class="col col-50">                
+            <div class="col col-33">                
                 <button class="button button-block button-assertive" ng-click="apagarDados(cod.codigo)" ng-disabled="!enable">
-                    Apagar Dados
+                    Apagar
                 </button>
             </div>
-            <div class="col col-50">
+            <div class="col col-33">
+                <button class="button button-block button-royal" ng-click="configurar(cod.codigo)" ng-disabled="!enable">
+                    Config
+                </button>
+            </div>
+            <div class="col col-33">
                 <button class="button button-block button-royal" ng-click="enviarDados(cod.codigo)" ng-disabled="!enable">
-                    Enviar Dados
+                    Enviar
                 </button>
             </div>
         </div>

@@ -8,6 +8,15 @@ angular.module('starter.controllers', [])
             $scope.cod = {codigo: 2};
             var db = null;
             $scope.enable = true;
+
+            $scope.conf = {
+                stationaryRadius: 50,
+                distanceFilter: 50,
+                interval: 10000,
+                fastestInterval: 5000,
+                activitiesInterval: 10000
+            };
+
             function openSqLite() {
                 db = window.sqlitePlugin.openDatabase({name: "mylocations.db", androidDatabaseImplementation: 2});
                 db.transaction(function (tx) {
@@ -46,8 +55,8 @@ angular.module('starter.controllers', [])
                         }
                     }
 
-                    //var url = "http://mydomain.com.br/webService/save";
-                    var url = "http://authidro.com.br/webServiceSmartHidro/app/index.php/savetest";
+                    var url = "http://mydomain.com.br/webService/save";
+                   
                     var paramSerializado = dados;
                     $http({
                         method: 'POST',
@@ -113,6 +122,22 @@ angular.module('starter.controllers', [])
                 //console.log('- Location: ', JSON.stringify(location));
             };
 
+            $scope.configurar = function () {
+                BackgroundGeolocation.configure({
+                    desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
+                    stationaryRadius: $scope.conf.stationaryRadius,
+                    distanceFilter: $scope.conf.distanceFilter,
+                    notificationTitle: 'Mouron85V3 Background',
+                    notificationText: 'enabled new Conf',
+                    debug: false,
+                    startOnBoot: false,
+                    stopOnTerminate: false,
+                    locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
+                    interval: $scope.conf.interval,
+                    fastestInterval: $scope.conf.fastestInterval,
+                    activitiesInterval: $scope.conf.activitiesInterval
+                });
+            }
 
             document.addEventListener('deviceready', onDeviceReady, false);
             function onDeviceReady() {
@@ -121,21 +146,8 @@ angular.module('starter.controllers', [])
                  stationaryRadius: 25,
                  */
 
-                BackgroundGeolocation.configure({
-                    desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
-                    stationaryRadius: 50,
-                    distanceFilter: 50,
-                    notificationTitle: 'Background tracking',
-                    notificationText: 'enabled',
-                    debug: true,
-                    startOnBoot: false,
-                    stopOnTerminate: false,
-                    locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
-                    interval: 10000,
-                    fastestInterval: 5000,
-                    activitiesInterval: 10000
-                });
-                
+                $scope.configurar();
+
                 BackgroundGeolocation.on('location', (location) => {
                     //console.log("location", location);
                     callbackFn(location);
@@ -149,24 +161,24 @@ angular.module('starter.controllers', [])
                      BackgroundGeolocation.endTask(taskKey);
                      });*/
                 });
-                
+
                 BackgroundGeolocation.on('stationary', (stationaryLocation) => {
                     // handle stationary locations here
                     //console.log("stationary", stationaryLocation);
                     callbackFn(stationaryLocation);
                 });
-                
+
                 BackgroundGeolocation.on('error', (error) => {
                     console.log('[ERROR] BackgroundGeolocation error:', error.code, error.message);
                 });
                 BackgroundGeolocation.on('start', () => {
                     console.log('[INFO] BackgroundGeolocation service has been started');
                 });
-                
+
                 BackgroundGeolocation.on('stop', () => {
                     console.log('[INFO] BackgroundGeolocation service has been stopped');
                 });
-                
+
                 BackgroundGeolocation.on('authorization', (status) => {
                     console.log('[INFO] BackgroundGeolocation authorization status: ' + status);
                     if (status !== BackgroundGeolocation.AUTHORIZED) {
@@ -176,22 +188,22 @@ angular.module('starter.controllers', [])
                         ]);
                     }
                 });
-                
+
                 BackgroundGeolocation.on('background', () => {
                     console.log('[INFO] App is in background');
                     // you can also reconfigure service (changes will be applied immediately)
-                    BackgroundGeolocation.configure({
-                        locationProvider: BackgroundGeolocation.DISTANCE_FILTER_PROVIDER
-                    });
+                    /*BackgroundGeolocation.configure({
+                     locationProvider: BackgroundGeolocation.DISTANCE_FILTER_PROVIDER
+                     });*/
                 });
-                
+
                 BackgroundGeolocation.on('foreground', () => {
                     console.log('[INFO] App is in foreground');
-                    BackgroundGeolocation.configure({
-                        locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER
-                    });
+                    /*BackgroundGeolocation.configure({
+                     locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER
+                     });*/
                 });
-                
+
                 BackgroundGeolocation.checkStatus(status => {
                     console.log('[INFO] BackgroundGeolocation service is running', status.isRunning);
                     console.log('[INFO] BackgroundGeolocation service has permissions', status.hasPermissions);
@@ -202,8 +214,6 @@ angular.module('starter.controllers', [])
                      }*/
                 });
             }
-
-
 
             $scope.iniciarMonitoramento = function () {
                 $scope.enable = false;
